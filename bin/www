@@ -1,58 +1,39 @@
-#!/usr/bin/env node
-
-/**
- * Module dependencies.
+/*
+ * @Description: 入口文件
+ * @Author: Alex_McAvoy
+ * @Date: 2023-08-22 21:24:16
  */
-
 var app = require('../app');
 var debug = require('debug')('account:server');
 var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
+// 从环境中获取端口号
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// 将端口号规范化
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
   if (isNaN(port)) {
-    // named pipe
     return val;
   }
 
   if (port >= 0) {
-    // port number
     return port;
   }
 
   return false;
 }
+app.set('port', port);
 
-/**
- * Event listener for HTTP server "error" event.
- */
+// 创建 http 服务
+var server = http.createServer(app);
 
+// 监听端口
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+// http 服务错误事件监听器
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -62,7 +43,7 @@ function onError(error) {
     ? 'Pipe ' + port
     : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
+  // 使用规定消息处理特定的监听消息
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -77,10 +58,7 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// http 服务事件监听器
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'

@@ -1,3 +1,8 @@
+/*
+ * @Description: 模板引擎设置与错误处理器
+ * @Author: Alex_McAvoy
+ * @Date: 2023-08-22 21:24:16
+ */
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -9,7 +14,7 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-// view engine setup
+// 模板引擎设置
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -22,18 +27,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
+// 抛出 404 异常并交给错误处理器处理
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// 错误处理器
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  // 设置错误消息局部变量，仅在开发模式中有效
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // 渲染错误页
   res.status(err.status || 500);
   res.render('error');
 });
