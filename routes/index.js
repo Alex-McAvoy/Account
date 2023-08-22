@@ -32,7 +32,7 @@ router.post('/account', function (req, res, next) {
   // 请求体数据写入 lowdb
   db.get('accounts').unshift({ id: id, ...req.body }).write();
   // 成功提醒
-  res.render('success');
+  res.render('success', {msg: ':) 添加成功', url: '/account'});
 });
 
 module.exports = router;
