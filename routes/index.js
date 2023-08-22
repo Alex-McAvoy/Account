@@ -31,7 +31,8 @@ router.post('/account', function (req, res, next) {
   let id = shortid.generate();
   // 请求体数据写入 lowdb
   db.get('accounts').unshift({ id: id, ...req.body }).write();
-  res.send('添加记录');
+  // 成功提醒
+  res.render('success');
 });
 
 module.exports = router;
