@@ -10,6 +10,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/web/index');
+var authRouter = require('./routes/web/auth');
 var accountRouter = require("./routes/api/account");
 
 var app = express();
@@ -25,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', authRouter);
 app.use('/api',accountRouter);
 
 // 抛出 404 异常并交给错误处理器处理
