@@ -7,6 +7,8 @@ var express = require('express');
 var lowdb = require('lowdb');
 var fileSync = require('lowdb/adapters/FileSync');
 var shortid = require('shortid');
+var moment = require('moment');
+const AccountModel = require('../models/AccountModel');
 
 // 创建路由对象
 var router = express.Router();
@@ -30,13 +32,17 @@ router.get('/account/create', function (req, res, next) {
 
 // 添加记录
 router.post('/account', (req, res) => {
-  // 生成 id
-  let id = shortid.generate();
-  console.log(req.body)
-  // 请求体数据写入 lowdb
-  db.get('accounts').unshift({ id: id, ...req.body }).write();
-  // 渲染添加成功提醒页
-  res.render('success', { msg: ':) 添加成功', url: '/account' });
+  // 将 time 属性转为 Date 类型
+  req.body.time = moment(req.body.time).toDate();
+  // 将数据插入 MongoDB
+  AccountModel.create({
+    ...req.body
+  }).then((data) => {
+    // 渲染添加成功提醒页
+    res.render('success', { msg: ':) 添加成功', url: '/account' });
+  }).catch((error) => {
+    res.status(500).send("插入失败")
+  });
 });
 
 // 删除记录
