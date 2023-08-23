@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 let AccountSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: truue
+        required: true
     }, 
     time: Date,
     type: {
