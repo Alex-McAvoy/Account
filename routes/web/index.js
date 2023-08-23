@@ -13,7 +13,9 @@ var router = express.Router();
 // 记账本列表页
 router.get('/account', function (req, res, next) {
   // 获取所有账单信息
-  AccountModel.find().sort({ time: -1 }).exec().then(data => {
+  AccountModel.find().sort({
+    time: -1
+  }).exec().then(data => {
     res.render('list', { accounts: data, moment: moment });
   }).catch(error => {
     res.status(500).send("读取失败" + error)
@@ -44,7 +46,9 @@ router.get('/account/:id', (req, res) => {
   // 获取 id 参数
   let id = req.params.id;
   // 删除
-  AccountModel.deleteOne({ _id: id }).then(data => {
+  AccountModel.deleteOne({
+    _id: id
+  }).then(data => {
     res.render('success', { msg: ':) 删除成功', url: '/account' });
   }).catch(error => {
     res.status(500).send("删除失败" + error)
