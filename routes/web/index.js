@@ -11,6 +11,11 @@ var checkLoginMiddleware = require('../../middleware/checkLoginMiddleware');
 // 创建路由对象
 var router = express.Router();
 
+// 首页
+router.get('/', (req, res) => {
+  res.redirect('/account');
+});
+
 // 记账本列表页
 router.get('/account', checkLoginMiddleware, function (req, res, next) {
   // 获取所有账单信息
