@@ -14,15 +14,18 @@ var router = express.Router();
 router.get('/account', function (req, res, next) {
   // 获取所有账单信息
   AccountModel.find().sort({ time: -1 }).exec().then(data => {
-    res.render('list', { accounts: data, moment: moment });
+    res.json({
+        code: '20000',
+        msg: '读取成功',
+        data: data
+    })
   }).catch(error => {
-    res.status(500).send("读取失败" + error)
+    res.json({
+        code: '20001',
+        msg: '读取失败',
+        error: error
+    })
   });
-});
-
-// 添加记录页
-router.get('/account/create', function (req, res, next) {
-  res.render('create');
 });
 
 // 添加记录
@@ -33,9 +36,17 @@ router.post('/account', (req, res) => {
   AccountModel.create({
     ...req.body
   }).then(data => {
-    res.render('success', { msg: ':) 添加成功', url: '/account' });
+    res.json({
+        code: '20000',
+        msg: ':) 添加成功',
+        data: data
+    })
   }).catch(error => {
-    res.status(500).send("插入失败" + error)
+    res.json({
+        code: '20001',
+        msg: '添加失败',
+        error: error
+    })
   });
 });
 
