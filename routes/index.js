@@ -20,9 +20,11 @@ var db = lowdb(adapter);
 // 记账本列表页
 router.get('/account', function (req, res, next) {
   // 获取所有账单信息
-  let accounts = db.get('accounts').value();
-  // 渲染账单列表页
-  res.render('list', { accounts: accounts });
+  AccountModel.find().sort({ time: -1 }).exec().then(data => {
+    res.render('list', { accounts: data, moment: moment });
+  }).catch(error => {
+    res.status(500).send("读取失败" + error)
+  });
 });
 
 // 添加记录页
@@ -37,11 +39,10 @@ router.post('/account', (req, res) => {
   // 将数据插入 MongoDB
   AccountModel.create({
     ...req.body
-  }).then((data) => {
-    // 渲染添加成功提醒页
+  }).then(data => {
     res.render('success', { msg: ':) 添加成功', url: '/account' });
-  }).catch((error) => {
-    res.status(500).send("插入失败")
+  }).catch(error => {
+    res.status(500).send("插入失败" + error)
   });
 });
 
