@@ -21,13 +21,24 @@ router.get('/login', (req, res) => {
 
 // 注册操作
 router.post('/reg', (req, res) => {
-    // 将 password 进行 md5 加密
-    req.body.password = md5(req.body.password);
-    // 创建新用户
-    UserModel.create({
-        ...req.body
-    }).then(data => {
-        return res.render('success', { msg: ':)注册成功', url: '/login' });
+    // 获取用户名
+    let { username } = req.body;
+    // 查询数据库是否已存在该用户
+    UserModel.findOne({ username: username }).then(data => {
+        // 判断是否存在用户
+        if (data) {
+            return res.render('success', { msg: ':)用户名名已存在，请登录', url: '/login' });
+        }
+        // 将 password 进行 md5 加密
+        req.body.password = md5(req.body.password);
+        // 创建新用户
+        UserModel.create({
+            ...req.body
+        }).then(data => {
+            return res.render('success', { msg: ':)注册成功', url: '/login' });
+        }).catch(error => {
+            return res.status(500).send('注册失败' + error);
+        });
     }).catch(error => {
         return res.status(500).send('注册失败' + error);
     });
