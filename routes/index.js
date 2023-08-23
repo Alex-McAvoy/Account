@@ -32,6 +32,7 @@ router.get('/account/create', function (req, res, next) {
 router.post('/account', (req, res) => {
   // 生成 id
   let id = shortid.generate();
+  console.log(req.body)
   // 请求体数据写入 lowdb
   db.get('accounts').unshift({ id: id, ...req.body }).write();
   // 渲染添加成功提醒页
