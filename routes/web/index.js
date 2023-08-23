@@ -35,7 +35,7 @@ router.post('/account', (req, res) => {
   }).then(data => {
     res.render('success', { msg: ':) 添加成功', url: '/account' });
   }).catch(error => {
-    res.status(500).send("插入失败" + error)
+    res.status(500).send("添加失败" + error)
   });
 });
 
