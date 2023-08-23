@@ -4,18 +4,12 @@
  * @Date: 2023-08-22 21:24:16
  */
 var express = require('express');
-var lowdb = require('lowdb');
 var fileSync = require('lowdb/adapters/FileSync');
-var shortid = require('shortid');
 var moment = require('moment');
 const AccountModel = require('../models/AccountModel');
 
 // 创建路由对象
 var router = express.Router();
-
-// 创建 db 对象
-var adapter = new fileSync(__dirname + '/../data/db.json');
-var db = lowdb(adapter);
 
 // 记账本列表页
 router.get('/account', function (req, res, next) {
@@ -51,9 +45,11 @@ router.get('/account/:id', (req, res) => {
   // 获取 id 参数
   let id = req.params.id;
   // 删除
-  db.get('accounts').remove({ id: id }).write();
-  // 渲染删除成功提醒页
-  res.render('success', { msg: ':) 删除成功', url: '/account' });
+  AccountModel.deleteOne({ _id: id }).then(data => {
+    res.render('success', { msg: ':) 删除成功', url: '/account' });
+  }).catch(error => {
+    res.status(500).send("删除失败" + error)
+  });
 });
 
 module.exports = router;
