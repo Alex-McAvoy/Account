@@ -53,6 +53,8 @@ router.post('/login', (req, res) => {
         if (!data) {
             return res.send('账户或密码错误')
         } else {
+            req.session.username = data.username;
+            req.session._id = data._id;
             return res.render('success', { msg: ':)登录成功', url: '/account' });
         }
     }).catch(error => {
