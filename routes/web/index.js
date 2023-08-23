@@ -5,7 +5,7 @@
  */
 var express = require('express');
 var moment = require('moment');
-const AccountModel = require('../models/AccountModel');
+const AccountModel = require('../../models/AccountModel');
 
 // 创建路由对象
 var router = express.Router();
