@@ -5,13 +5,14 @@
  */
 var express = require('express');
 var moment = require('moment');
-const AccountModel = require('../../models/AccountModel');
+var AccountModel = require('../../models/AccountModel');
+var checkLoginMiddleware = require('../../middleware/checkLoginMiddleware');
 
 // 创建路由对象
 var router = express.Router();
 
 // 记账本列表页
-router.get('/account', function (req, res, next) {
+router.get('/account', checkLoginMiddleware, function (req, res, next) {
   // 获取所有账单信息
   AccountModel.find().sort({
     time: -1
@@ -23,12 +24,12 @@ router.get('/account', function (req, res, next) {
 });
 
 // 添加记录页
-router.get('/account/create', function (req, res, next) {
+router.get('/account/create', checkLoginMiddleware, function (req, res, next) {
   res.render('create');
 });
 
 // 添加记录
-router.post('/account', (req, res) => {
+router.post('/account', checkLoginMiddleware, (req, res) => {
   // 将 time 属性转为 Date 类型
   req.body.time = moment(req.body.time).toDate();
   // 将数据插入 MongoDB
@@ -42,7 +43,7 @@ router.post('/account', (req, res) => {
 });
 
 // 删除记录
-router.get('/account/:id', (req, res) => {
+router.get('/account/:id', checkLoginMiddleware, (req, res) => {
   // 获取 id 参数
   let id = req.params.id;
   // 删除
