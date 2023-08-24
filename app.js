@@ -11,9 +11,10 @@ var logger = require('morgan');
 var session = require('express-session');
 var MongoStore = require('connect-mongo');
 
-var indexRouter = require('./routes/web/index');
+var accountRouter = require('./routes/web/account');
 var authRouter = require('./routes/web/auth');
-var accountRouter = require("./routes/api/account");
+var accountApiRouter = require("./routes/api/account");
+var authApiRouter = require("./routes/api/auth");
 
 var { DB_HOST, DB_PORT, DB_NAME } = require('./config/config');
 
@@ -45,9 +46,10 @@ app.use(session({
 }));
 
 // 路由设置
-app.use('/', indexRouter);
+app.use('/', accountRouter);
 app.use('/', authRouter);
-app.use('/api', accountRouter);
+app.use('/api', accountApiRouter);
+app.use('/api', authApiRouter);
 
 // 抛出 404 异常并交给错误处理器处理
 app.use(function (req, res, next) {
