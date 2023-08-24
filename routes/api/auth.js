@@ -7,6 +7,7 @@ var express = require('express');
 var md5 = require('md5');
 var jwt = require('jsonwebtoken');
 var UserModel = require('../../models/UserModel');
+var { secret } = require('../../config/config');
 
 var router = express.Router();
 
@@ -27,7 +28,7 @@ router.post('/login', (req, res) => {
             let token = jwt.sign({
                 username: data.username,
                 _id: data._id
-            }, 'alex', {
+            }, secret, {
                 expiresIn: 60 * 60 * 24 * 7
             });
             // 响应 token
