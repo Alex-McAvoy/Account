@@ -6,7 +6,7 @@
 var express = require('express');
 var moment = require('moment');
 var AccountModel = require('../../models/AccountModel');
-var checkLoginMiddleware = require('../../middleware/checkLoginMiddleware');
+var checkLoginMiddleware = require('../../middleware/CheckLoginMiddleware');
 
 // 创建路由对象
 var router = express.Router();

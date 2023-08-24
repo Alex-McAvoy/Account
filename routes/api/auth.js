@@ -17,7 +17,7 @@ router.post('/login', (req, res) => {
     // 查询数据库
     UserModel.findOne({ username: username, password: md5(password) }).then(data => {
         if (!data) {
-            res.json({
+            return res.json({
                 code: '20001',
                 msg: '账户或密码错误',
                 data: null
@@ -31,19 +31,18 @@ router.post('/login', (req, res) => {
                 expiresIn: 60 * 60 * 24 * 7
             });
             // 响应 token
-            res.json({
+            return res.json({
                 code: '20000',
                 msg: '登录成功',
                 data: token
             })
         }
     }).catch(error => {
-        res.json({
+        return res.json({
             code: '20001',
             msg: '登录失败',
             error: error
         })
-        // return res.status(500).send('登录失败' + error);
     });
 });
 
